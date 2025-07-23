@@ -108,6 +108,7 @@
 
       const data = await response.json();
       self.users = data; // Store the fetched users in the self.users array
+      self.saveToStorage(); // Save users to localStorage
       if (data) {
         console.log(self.users);
         return;
@@ -119,6 +120,7 @@
 
   self.saveToStorage = () => {
     localStorage.setItem("users", JSON.stringify(self.users));
+    console.log("Users saved to localStorage");
   };
 
   self.buildHTML = () => {
