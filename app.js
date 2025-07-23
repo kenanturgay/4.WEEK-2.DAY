@@ -1,56 +1,108 @@
-/* eslint-disable */ // Turn off code checking rules (for ESLint tool)
+(($) => {
+  "use strict";
 
-(($) => { // Start a function that runs itself (self-invoked)
-
-  "use strict"; // Use strict mode (show errors for bad code)
-
-  const classes = { 
-    // Here you can write class names for CSS (for example: button: "my-btn")
-    
+  const classes = {
+    style: "custom-style",
+    wrapper: "custom-wrapper",
+    container: "custom-container",
   };
 
   const selectors = {
-    // Here you can write jQuery selectors (for example: button: ".my-btn")
-    
+    style: `.${classes.style}`,
+    wrapper: `.${classes.wrapper}`,
+    container: `.${classes.container}`,
+    appendLocation: ".ins-api-users",
   };
 
-  const self = {
-    // This object holds all your functions
-  };
+  const self = {};
 
   self.init = () => {
-    // This function runs when the page is ready
-    // You can call other functions from here
-  };
-
-  self.reset = () => {
-    // This function can reset or clean the screen
+    self.buildCSS();
+    self.buildHTML();
   };
 
   self.buildCSS = () => {
-    // This function can add CSS styles to the page
-    
+    const customStyle = `
+      <style class="${classes.style}">
+
+        /* root variables for the app to use them globally in the app css */
+        :root {
+            --main-color: #4CAF50; /* Main color for the app */
+            --text-color: #1ada2aff; /* Text color */
+            --background-color1: #3708f3ff; /* Background color */
+            --background-color2:rgba(23, 201, 35, 1);
+            --button-color: #4CAF50; /* Button color */
+            --button-hover-color: #45a049; /* Button hover color */
+            --border-radius: 5px; /* Border radius for buttons */
+            --border-color: #40fca4ff; /* Border color for elements */
+        }
+
+        /* * is a universal selector that targets all elements on the page */
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* This is the body style */
+
+        body {
+            font-family: Arial, sans-serif;
+            color: var(--text-color);
+            background:linear-gradient(90deg,var(--background-color1), var(--background-color2));
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            box-sizing: border-box;
+
+        }
+
+        .ins-api-users {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: linear-gradient(90deg, var(--background-color1), var(--background-color2));
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+
+        /* This is the wrapper style */
+        .${classes.wrapper} {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: clamp(200px, 100%, 900px);
+            height: clamp(200px, 100%, 600px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+
+      </style>
+    `;
+    $(selectors.style).remove();
+    $("head").append(customStyle);
   };
+
+ 
 
   self.buildHTML = () => {
-    // This function can add HTML elements to the page
+    const html = `<div class="${classes.wrapper}"><div class="${classes.container}">Hello</div></div>`;
+
+    $(selectors.appendLocation).append(html);
   };
 
-  self.setEvents = () => {
-    // This function adds click or change events (like button clicks)
-  };
-
-  self.fetchData = async () => {
-    // This function can get data from the internet (API)
-    // It is async, so it works with 'await'
-  };
-
-  self.saveToStorage = () => {
-    // This function can save something to the browser (localStorage)
-  };
-
-  $(document).ready(self.init); 
-  // When the page is ready, run self.init()
-
-})(jQuery); 
-// End the self-invoked function and give jQuery as '$'
+  $(document).ready(self.init);
+})(jQuery);
