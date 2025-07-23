@@ -14,7 +14,9 @@
     appendLocation: ".ins-api-users",
   };
 
-  const self = {};
+  const self = {
+    users:[],
+  };
 
   self.init = () => {
     self.buildCSS();
