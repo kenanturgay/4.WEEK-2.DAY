@@ -15,7 +15,7 @@
   };
 
   const self = {
-    users:[],
+    users: [],
   };
 
   self.init = () => {
@@ -95,7 +95,6 @@
 
       </style>
     `;
-    $(selectors.style).remove();
     $("head").append(customStyle);
   };
 
@@ -104,9 +103,11 @@
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users"
       );
+
       if (!response.ok) throw new Error("Sunucu hatası!");
 
       const data = await response.json();
+      self.users = data; // Store the fetched users in the self.users array
       if (data) {
         console.log(data);
         return;
