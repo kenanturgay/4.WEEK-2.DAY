@@ -109,12 +109,16 @@
       const data = await response.json();
       self.users = data; // Store the fetched users in the self.users array
       if (data) {
-        console.log(data);
+        console.log(self.users);
         return;
       }
     } catch (error) {
       console.error("Fetch Hatası:", error);
     }
+  };
+
+  self.saveToStorage = () => {
+    localStorage.setItem("users", JSON.stringify(self.users));
   };
 
   self.buildHTML = () => {
