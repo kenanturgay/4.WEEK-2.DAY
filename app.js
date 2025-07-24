@@ -26,8 +26,8 @@
 
   self.init = () => {
     self.buildCSS();
-    // Check if users are already stored in localStorage after the page loads
-    self.fetchData().then(self.buildHTML);
+
+    self.loadFromStorage();
   };
 
   self.buildCSS = () => {
@@ -198,6 +198,16 @@
     });
 
     $(selectors.appendLocation).append(html);
+    self.setEvents();
+  };
+
+  self.setEvents = () => {
+    $(document).on("click", selectors.deleteBtn, function () {
+      const id = $(this).closest(selectors.userCard).data("id");
+      self.users = self.users.filter((user) => user.id !== id);
+      self.saveToStorage();
+      self.buildHTML();
+    });
   };
 
   $(document).ready(self.init);
