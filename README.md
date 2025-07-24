@@ -13,7 +13,7 @@ The code is written inside a **self-invoked function** to keep it clean and orga
 - If you click outside the popup or click the Delete button inside it, the popup closes.
 - The user data is saved in your browser (localStorage) for one day. This helps the page load faster next time.
 
-## Features
+## Features Included
 
 - Clean design using CSS variables (`:root`) for easy color and style changes.
 - Popup window with a smooth blurred background.
