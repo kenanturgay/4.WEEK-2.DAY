@@ -9,6 +9,7 @@
     errorBox: "error-box",
     popup: "popup-overlay",
     popupBox: "popup-box",
+    usersTitle: "users-title",
   };
 
   const selectors = {
@@ -19,6 +20,7 @@
     errorBox: `.${classes.errorBox}`,
     popup: `.${classes.popup}`,
     popupBox: `.${classes.popupBox}`,
+    usersTitle: `.${classes.usersTitle}`,
     appendLocation: ".ins-api-users",
   };
 
@@ -90,6 +92,7 @@
           padding: 20px;
           display: flex;
           justify-content: center;
+          flex-direction: column;
           align-items: center;
         }
 
@@ -186,6 +189,15 @@
         transition: transform var(--transition-default);
         position: relative;
       }
+
+      .${classes.usersTitle}{
+      
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--color-text);
+        font-family: var(--font-family-base);
+      }
       </style>
 
     `;
@@ -261,7 +273,11 @@
       container.append(userHTML);
     });
 
-    $(selectors.appendLocation).html(container);
+    const title = $(`<h1 class="${classes.usersTitle}">Users</h1>`);
+
+    $(selectors.appendLocation).html("");
+    $(selectors.appendLocation).append(title, container);
+
     self.setEvents();
   };
 
