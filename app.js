@@ -9,6 +9,7 @@
     errorBox: "error-box",
     popup: "popup-overlay",
     popupBox: "popup-box",
+    spinner: "spinner",
     usersTitle: "users-title",
   };
 
@@ -21,6 +22,7 @@
     popup: `.${classes.popup}`,
     popupBox: `.${classes.popupBox}`,
     usersTitle: `.${classes.usersTitle}`,
+    spinner: `.${classes.spinner}`,
     appendLocation: ".ins-api-users",
   };
 
@@ -167,18 +169,19 @@
         }
 
         .${classes.popup} {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-      }
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(8px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 999;
+        }
+          
 
       .${classes.popupBox} {
         background: white;
@@ -198,6 +201,22 @@
         color: var(--color-text);
         font-family: var(--font-family-base);
       }
+
+      .${classes.spinner} {
+          width: 40px;
+          height: 40px;
+          margin: 20px auto;
+          border: 5px solid #f3f3f3;
+          border-top: 5px solid #3498db;
+          border-radius: 50%;
+          animation: rotate 1s linear infinite;
+        }
+        @keyframes rotate {
+          0% { transform: rotate(0); }
+          100% { transform: rotate(360deg); }
+        }
+
+
       </style>
 
     `;
@@ -229,9 +248,13 @@
 
   self.fetchData = async () => {
     try {
+      $(selectors.appendLocation).html(
+        `<div class="${classes.spinner}"></div>`
+      );
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users"
       );
+
       if (!response.ok) throw new Error("Server Error: " + response.status);
 
       const data = await response.json();
