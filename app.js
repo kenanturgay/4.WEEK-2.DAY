@@ -7,6 +7,8 @@
     userCard: "user-card",
     deleteBtn: "delete-btn",
     errorBox: "error-box",
+    popup: "popup-overlay",
+    popupBox: "popup-box",
   };
 
   const selectors = {
@@ -15,6 +17,8 @@
     userCard: `.${classes.userCard}`,
     deleteBtn: `.${classes.deleteBtn}`,
     errorBox: `.${classes.errorBox}`,
+    popup: `.${classes.popup}`,
+    popupBox: `.${classes.popupBox}`,
     appendLocation: ".ins-api-users",
   };
 
@@ -158,6 +162,30 @@
           font-weight: bold;
           padding: 10px;
         }
+
+        .${classes.popup} {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
+
+      .${classes.popupBox} {
+        background: white;
+        padding: 25px;
+        border-radius: var(--radius);
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        transform: scale(1.05);
+        transition: transform var(--transition-default);
+        position: relative;
+      }
       </style>
 
     `;
@@ -238,11 +266,37 @@
   };
 
   self.setEvents = () => {
+    // 1. Sil butonu olayı
     $(document).on("click", selectors.deleteBtn, function () {
       const id = $(this).closest(selectors.userCard).data("id");
       self.users = self.users.filter((user) => user.id !== id);
       self.saveToStorage();
       self.buildHTML();
+
+      // Popup varsa kapat
+      $(`.${classes.popup}`).remove();
+    });
+
+    // 2. Kart tıklanınca popup oluştur
+    $(selectors.userCard).on("click", function (e) {
+      if ($(e.target).is(selectors.deleteBtn)) return; // Sil butonuna tıklanmışsa popup açma
+
+      const clone = $(this).clone();
+      const overlay = $(`
+      <div class="${classes.popup}">
+        <div class="${classes.popupBox}"></div>
+      </div>
+    `);
+
+      overlay.find(`.${classes.popupBox}`).append(clone);
+      $("body").append(overlay);
+    });
+
+    // 3. Popup arka plana tıklanınca kapanır
+    $(document).on("click", `.${classes.popup}`, function (e) {
+      if ($(e.target).hasClass(classes.popup)) {
+        $(this).remove();
+      }
     });
   };
 
