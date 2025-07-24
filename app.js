@@ -32,17 +32,36 @@
   self.buildCSS = () => {
     const styleHTML = `
       <style class="${classes.style}">
-        :root {
-          --main-color: #4CAF50;
-          --text-color: #1ada2aff;
-          --background-color1: #3708f3ff;
-          --background-color2: rgba(23, 201, 35, 1);
-          --button-color: #f805056f;
-          --button-hover-color: #ff0000ff;
-          --border-radius: 6px;
-          --border-color: #40fca4ff;
-          --font-size: 16px;
-          --font-family: Arial, sans-serif;
+      :root {
+        /* Colors */
+        --color-primary: #4CAF50;
+        --color-text: #1ada2a;
+        --color-bg-start: #3708f3;
+        --color-bg-end: #17c923;
+        --color-btn: #f80505af;
+        --color-btn-hover: #ff0000;
+        --color-border: #40fca4;
+        --color-card-start: #89c8ff;
+        --color-card-end: #56fce0;
+        --color-heading: #2c3e50;
+        --color-paragraph: #444;
+        --color-error: red;
+        --color-shadow: rgba(0, 0, 0, 0.05);
+        --color-card-hover-shadow: rgba(255, 0, 0, 1);
+
+        /* Typography */
+        --font-size-base: 16px;
+        --font-size-heading: 20px;
+        --font-size-paragraph: 15px;
+        --font-family-base: Arial, sans-serif;
+        --font-family-cards: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        /* Layout & Radius */
+        --radius: 6px;
+
+        /* Effects */
+        --transition-default: 0.2s ease;
+        --box-shadow-light: 0 4px 12px var(--color-shadow);
         }
 
         * {
@@ -52,10 +71,10 @@
         }
 
         body {
-          font-family: var(--font-family);
-          font-size: var(--font-size);
-          color: var(--text-color);
-          background: linear-gradient(90deg, var(--background-color1), var(--background-color2));
+          font-family: var(--font-family-base);
+          font-size: var(--font-size-base);
+          color: var(--color-text);
+          background: linear-gradient(90deg, var(--color-bg-start), var(--color-bg-end));
           display: flex;
           justify-content: center;
           align-items: center;
@@ -81,65 +100,66 @@
           overflow-y: auto;
           padding: 20px;
 
-          background: linear-gradient(130deg, var(--background-color2), var(--background-color1));
-          border: 1px solid var(--border-color);
-          border-radius: var(--border-radius);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
+          background: linear-gradient(130deg, var(--color-bg-end), var(--color-bg-start));
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius);
+          box-shadow: var(--box-shadow-light);
+        }
 
         .${classes.userCard} {
-            background: linear-gradient(135deg, #89c8ffff, #56fce0ff); /* Hafif mavi geçişli arka plan */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 15px;
-            width: 300px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+          background: linear-gradient(135deg, var(--color-card-start), var(--color-card-end));
+          font-family: var(--font-family-cards);
+          color: #333;
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius);
+          padding: 15px;
+          width: 300px;
+          box-shadow: var(--box-shadow-light);
+          position: relative;
+          transition: transform var(--transition-default), box-shadow var(--transition-default);
+        }
 
         .${classes.userCard}:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0px 16px rgba(255, 0, 0, 1);
-          }
+          transform: scale(1.02);
+          box-shadow: 0 0 16px var(--color-card-hover-shadow);
+        }
 
-          .${classes.userCard} h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #2c3e50;
-          }
+        .${classes.userCard} h3 {
+          font-size: var(--font-size-heading);
+          margin-bottom: 8px;
+          color: var(--color-heading);
+        }
 
-          .${classes.userCard} p {
-            font-size: 15px;
-            line-height: 1.5;
-            color: #444;
-            margin-bottom: 5px;
-          }
+        .${classes.userCard} p {
+          font-size: var(--font-size-paragraph);
+          line-height: 1.5;
+          color: var(--color-paragraph);
+          margin-bottom: 5px;
+        }
 
         .${classes.deleteBtn} {
           position: absolute;
           top: 10px;
           right: 10px;
-          background-color: var(--button-color);
+          background-color: var(--color-btn);
           color: white;
           border: none;
           padding: 5px 10px;
-          border-radius: var(--border-radius);
+          border-radius: var(--radius);
           cursor: pointer;
         }
 
         .${classes.deleteBtn}:hover {
-          background-color: var(--button-hover-color);
+          background-color: var(--color-btn-hover);
         }
 
         .${classes.errorBox} {
-          color: red;
+          color: var(--color-error);
           font-weight: bold;
           padding: 10px;
         }
       </style>
+
     `;
     $("head").append(styleHTML);
   };
@@ -181,8 +201,6 @@
   };
 
   self.buildHTML = () => {
-
-    
     const container = $(`<div class="${classes.wrapper}"></div>`);
 
     if (self.users.length === 0) {
