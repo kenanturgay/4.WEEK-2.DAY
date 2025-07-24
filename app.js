@@ -14,11 +14,14 @@
     appendLocation: ".ins-api-users",
   };
 
-  const self = {};
+  const self = {
+    users: [],
+  };
 
   self.init = () => {
     self.buildCSS();
     self.buildHTML();
+    self.fetchData();
   };
 
   self.buildCSS = () => {
@@ -92,11 +95,33 @@
 
       </style>
     `;
-    $(selectors.style).remove();
     $("head").append(customStyle);
   };
 
- 
+  self.fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+
+      if (!response.ok) throw new Error("Sunucu hatası!");
+
+      const data = await response.json();
+      self.users = data; // Store the fetched users in the self.users array
+      self.saveToStorage(); // Save users to localStorage
+      if (data) {
+        console.log(self.users);
+        return;
+      }
+    } catch (error) {
+      console.error("Fetch Hatası:", error);
+    }
+  };
+
+  self.saveToStorage = () => {
+    localStorage.setItem("users", JSON.stringify(self.users));
+    console.log("Users saved to localStorage");
+  };
 
   self.buildHTML = () => {
     const html = `<div class="${classes.wrapper}"><div class="${classes.container}">Hello</div></div>`;
