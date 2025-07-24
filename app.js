@@ -219,7 +219,7 @@
     const storedTime = localStorage.getItem(self.storageTimeKey);
     const now = new Date().getTime();
 
-    if (storedUsers && storedTime && now - storedTime < 86) {
+    if (storedUsers && storedTime && now - storedTime < 86400000) {
       self.users = JSON.parse(storedUsers);
       self.buildHTML();
     } else {
@@ -232,7 +232,7 @@
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users"
       );
-      if (!response.ok) throw new Error("Sunucu hatası!");
+      if (!response.ok) throw new Error("Server Error: " + response.status);
 
       const data = await response.json();
       self.users = data;
@@ -264,10 +264,10 @@
         <div class="${classes.userCard}" data-id="${user.id}">
           <button class="${classes.deleteBtn}">Delete</button>
           <h3>${user.name}</h3>
-          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>Email:</strong> <a href="mailto:${user.email}">${user.email}</a></p>
           <p><strong>Adress:</strong> ${user.address.street}, ${user.address.city}</p>
-          <p><strong>Phone:</strong> ${user.phone}</p>
-          <p><strong>Website:</strong> ${user.website}</p>
+          <p><strong>Phone:</strong> <a href="tel:${user.phone}">${user.phone}</a></p>
+          <p><strong>Website:</strong> <a href="http://${user.website}" target="_blank">${user.website}</a></p>
         </div>
       `);
       container.append(userHTML);
