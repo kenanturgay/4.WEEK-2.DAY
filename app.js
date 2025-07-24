@@ -20,6 +20,8 @@
 
   const self = {
     users: [],
+    storageKey: "users",
+    storageTimeKey: "usersTime",
   };
 
   self.init = () => {
@@ -139,29 +141,40 @@
     $("head").append(customStyle);
   };
 
+  self.loadFromStorage = () => {
+    const storedUsers = localStorage.getItem(self.storageKey);
+    const storedTime = localStorage.getItem(self.storageTimeKey);
+    const now = new Date().getTime();
+
+    if (storedUsers && storedTime && now - storedTime < 86400000) {
+      self.users = JSON.parse(storedUsers);
+      self.buildHTML();
+    } else {
+      self.fetchData();
+    }
+  };
+
   self.fetchData = async () => {
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users"
       );
-
       if (!response.ok) throw new Error("Sunucu hatası!");
 
       const data = await response.json();
-      self.users = data; // Store the fetched users in the self.users array
-      self.saveToStorage(); // Save users to localStorage
-      if (data) {
-        console.log(self.users);
-        return;
-      }
-    } catch (error) {
-      console.error("Fetch Hatası:", error);
+      self.users = data;
+      self.saveToStorage();
+      self.buildHTML();
+    } catch (err) {
+      console.error("Fetch Hatası:", err);
+      const errorBox = `<div class="${classes.errorBox}">Veri çekilirken bir hata oluştu!</div>`;
+      $(selectors.appendLocation).html(errorBox);
     }
   };
 
   self.saveToStorage = () => {
-    localStorage.setItem("users", JSON.stringify(self.users));
-    console.log("Users saved to localStorage");
+    localStorage.setItem(self.storageKey, JSON.stringify(self.users));
+    localStorage.setItem(self.storageTimeKey, new Date().getTime());
   };
 
   self.buildHTML = () => {
