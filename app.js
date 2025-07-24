@@ -162,6 +162,16 @@
 
     `;
     $("head").append(styleHTML);
+    document.title = "Users";
+
+    // Add favicon
+    if (!$("link[rel='icon']").length) {
+      const favicon = document.createElement("link");
+      favicon.rel = "icon";
+      favicon.href = "https://cdn-icons-png.flaticon.com/512/747/747376.png";
+      favicon.type = "image/png";
+      document.head.appendChild(favicon);
+    }
   };
 
   self.loadFromStorage = () => {
